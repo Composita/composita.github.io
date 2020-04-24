@@ -1,0 +1,15 @@
+# Temporary files.
+*~
+*.swp
+
+# Xcode user data.
+xcuserdata
+
+# Folder metadata
+.DS_Store
+[Dd]esktop.ini
+
+# Generated files
+_site
+Gemfile.lock
+
