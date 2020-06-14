@@ -19,7 +19,7 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "predeploy": "yarn build && cp CNAME build/CNAME",
+    "predeploy": "yarn build && cp CNAME .nojekyll build/",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
