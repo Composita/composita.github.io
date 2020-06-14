@@ -4,13 +4,28 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Jekyll Docker Serve",
             "type": "shell",
-            "command": "docker run --rm -it -v $(pwd):/srv/jekyll -p 127.0.0.1:4000:4000 jekyll/jekyll:pages jekyll serve",
+            "label": "serve: build",
+            "dependsOn": [ "yarn: deploy" ],
+            "command": "serve",
+            "args": [
+                "-s",
+                "build",
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
+            }
+        },
+        {
+            "type": "shell",
+            "label": "yarn: deploy",
+            "dependsOn": [ ],
+            "command": "yarn",
+            "args": [
+                "deploy",
+            ],
+            "group": "build"
         }
     ]
 }
