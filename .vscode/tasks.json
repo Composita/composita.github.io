@@ -5,8 +5,8 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "serve: build",
-            "dependsOn": [ "yarn: deploy" ],
+            "label": "serve: deploy",
+            "dependsOn": [ "yarn: predeploy" ],
             "command": "serve",
             "args": [
                 "-s",
@@ -19,11 +19,11 @@
         },
         {
             "type": "shell",
-            "label": "yarn: deploy",
+            "label": "yarn: predeploy",
             "dependsOn": [ ],
             "command": "yarn",
             "args": [
-                "deploy",
+                "predeploy",
             ],
             "group": "build"
         }
