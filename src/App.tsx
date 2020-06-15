@@ -26,17 +26,22 @@ END HelloWorld;`,
   render() {
     return (
       <div>
+        <div>
+          <h1>Composita Language Playground</h1>
+        </div>
         <CodeMirror
           value={this.state.outputText}
           options={{
             mode: 'javascript',
             lineNumbers: true,
           }}
-          onChange={(_editor, _data, value) => {
+          onChange={(editor, _data, value) => {
+            const position = editor.getCursor();
             this.setState({
               runCode: false,
               outputText: value,
-            })
+            });
+            editor.setCursor(position.line, position.ch);
           }}
         />
         <button onClick={this.runCode}>run code</button>
