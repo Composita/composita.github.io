@@ -20,8 +20,16 @@
         "ecmaVersion": 11,
         "sourceType": "module"
     },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "detect"
+        }
+    },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "react",
+        "prettier"
     ],
     "rules": {
     }
