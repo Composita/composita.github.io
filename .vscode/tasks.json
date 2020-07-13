@@ -12,20 +12,20 @@
                 "-s",
                 "build",
             ],
+            "group": "build",
+        },
+        {
+            "type": "shell",
+            "label": "yarn: build",
+            "dependsOn": [ ],
+            "command": "yarn",
+            "args": [
+                "build",
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
-        },
-        {
-            "type": "shell",
-            "label": "yarn: predeploy",
-            "dependsOn": [ ],
-            "command": "yarn",
-            "args": [
-                "predeploy",
-            ],
-            "group": "build"
         }
     ]
 }

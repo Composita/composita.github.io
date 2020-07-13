@@ -2,12 +2,13 @@ import { default as React, Component } from 'react';
 
 interface ComponentState {
     license: string | undefined;
+    error: string | undefined;
 }
 
 export class License extends Component<unknown, ComponentState> {
     constructor(props: unknown) {
         super(props);
-        this.state = { license: License.text };
+        this.state = { license: License.text, error: undefined };
     }
 
     private static text: string | undefined = undefined;
@@ -19,15 +20,35 @@ export class License extends Component<unknown, ComponentState> {
                 License.text = await response.text();
             } catch (error) {
                 console.error(error);
+                this.setState({ license: undefined, error: error });
                 return;
             }
         }
-        this.setState({ license: License.text });
+        this.setState({ license: License.text, error: undefined });
+    }
+
+    renderLicense(): JSX.Element {
+        if (this.state.error !== undefined) {
+            return (
+                <pre>
+                    Failed to load license:
+                    <br />
+                    {this.state.error}
+                </pre>
+            );
+        }
+        if (this.state.license === undefined) {
+            return <p>Loading license...</p>;
+        }
+        return <pre>{this.state.license}</pre>;
     }
 
     render(): JSX.Element {
         return (
-            <div>{this.state.license === undefined ? <p>Loading license...</p> : <pre>{this.state.license}</pre>}</div>
+            <div className="container">
+                <h3>License</h3>
+                {this.renderLicense()}
+            </div>
         );
     }
 }

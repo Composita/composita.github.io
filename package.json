@@ -14,12 +14,12 @@
     "react-router-dom": "^5.2.0"
   },
   "scripts": {
-    "predeploy": "yarn build && copyfiles CNAME .nojekyll LICENSE.txt build",
+    "predeploy": "yarn build",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "react-scripts start",
-    "build": "yarn lint && react-scripts build",
-    "test": "yarn lint && react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "yarn lint && react-scripts build && copyfiles CNAME .nojekyll LICENSE.txt build",
+    "eject": "react-scripts eject",
+    "svgr": "svgr --ignore-existing --out-dir './src/assets/svg/' --typescript --icon --ext 'tsx' --filename-case 'kebab'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,10 +38,7 @@
   },
   "devDependencies": {
     "@composita/system": "^0.1.0-dev.7",
-    "@testing-library/dom": "^7.20.1",
-    "@testing-library/jest-dom": "^5.11.0",
-    "@testing-library/react": "^10.4.5",
-    "@testing-library/user-event": "^12.0.11",
+    "@svgr/cli": "^5.4.0",
     "@types/bootstrap": "^4.5.0",
     "@types/codemirror": "0.0.97",
     "@types/jest": "^26.0.4",
@@ -60,7 +57,7 @@
     "eslint-plugin-react": "^7.20.3",
     "popper.js": "^1.16.1",
     "prettier": "^2.0.5",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.1",
     "typescript": "~3.9.6"
   }
 }

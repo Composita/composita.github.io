@@ -9,17 +9,21 @@ interface ComponentState {
     runCode: boolean;
 }
 
+const startCode = `COMPONENT HelloWorld;
+  BEGIN
+    WRITE("Hello World"); WRITELINE;
+END HelloWorld;`;
+
 export class Playground extends Component<unknown, ComponentState> {
     constructor(props: unknown) {
         super(props);
         this.state = {
             runCode: false,
-            code: `COMPONENT HelloWorld;
-  BEGIN
-    WRITE("Hello World"); WRITELINE;
-END HelloWorld;`,
+            code: Playground.lastCode,
         };
     }
+
+    static lastCode = startCode;
 
     private output = '';
 
@@ -36,12 +40,14 @@ END HelloWorld;`,
         this.setState({ runCode: true });
     };
 
-    render(): JSX.Element {
+    resetCode: () => Promise<void> = async () => {
+        Playground.lastCode = startCode;
+        this.setState({ code: Playground.lastCode, runCode: false });
+    };
+
+    renderPlayground(): JSX.Element {
         return (
             <div>
-                <div>
-                    <h1>Composita Language Playground</h1>
-                </div>
                 <CodeMirror
                     value={this.state.code}
                     options={{
@@ -54,14 +60,24 @@ END HelloWorld;`,
                             runCode: true,
                             code: value,
                         });
+                        Playground.lastCode = value;
                         editor.setCursor(position.line, position.ch);
                     }}
                 />
-                <button onClick={this.runCode}>run code</button>
-
-                <div className="Output">
+                <button onClick={this.runCode}>Run</button>
+                <button onClick={this.resetCode}>Reset</button>
+                <div className="output">
                     <pre>{this.state.runCode && this.output}</pre>
                 </div>
+            </div>
+        );
+    }
+
+    render(): JSX.Element {
+        return (
+            <div className="container">
+                <h3>Composita Language Playground</h3>
+                {this.renderPlayground()}{' '}
             </div>
         );
     }

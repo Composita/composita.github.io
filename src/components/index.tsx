@@ -1,14 +1,14 @@
 import { default as React, Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Home } from './components/home';
-import { About } from './components/about';
-import { Playground } from './components/playground';
-import { DevInfo } from './components/dev';
-import { License } from './components/license';
-import { default as Footer } from './components/footer';
-import { default as Navigation } from './components/navigation';
+import { Home } from './home';
+import { About } from './about';
+import { Playground } from './playground';
+import { DevInfo } from './dev';
+import { License } from './license';
+import { default as Footer } from './footer';
+import { default as Navigation } from './navigation';
 
-export class App extends Component {
+export class Index extends Component {
     render(): JSX.Element {
         return (
             <div className="App">
