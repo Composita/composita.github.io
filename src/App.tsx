@@ -4,7 +4,8 @@ import { Home } from './components/home';
 import { About } from './components/about';
 import { Playground } from './components/playground';
 import { DevInfo } from './components/dev';
-import { Footer } from './components/footer';
+import { License } from './components/license';
+import { default as Footer } from './components/footer';
 import { default as Navigation } from './components/navigation';
 
 export class App extends Component {
@@ -18,9 +19,10 @@ export class App extends Component {
                         <Route path="/play" exact component={() => <Playground />} />
                         <Route path="/dev" exact component={() => <DevInfo />} />
                         <Route path="/about" exact component={() => <About />} />
+                        <Route path="/license" exact component={() => <License />} />
                     </Switch>
+                    <Footer />
                 </Router>
-                <Footer />
             </div>
         );
     }

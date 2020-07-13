@@ -4,12 +4,12 @@ import { System } from '@composita/system';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 
-interface State {
+interface ComponentState {
     code: string;
     runCode: boolean;
 }
 
-export class Playground extends Component<unknown, State> {
+export class Playground extends Component<unknown, ComponentState> {
     constructor(props: unknown) {
         super(props);
         this.state = {
