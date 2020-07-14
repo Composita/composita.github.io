@@ -27,7 +27,7 @@ export class License extends Component<unknown, ComponentState> {
         this.setState({ license: License.text, error: undefined });
     }
 
-    renderLicense(): JSX.Element {
+    private renderLicense(): JSX.Element {
         if (this.state.error !== undefined) {
             return (
                 <pre>

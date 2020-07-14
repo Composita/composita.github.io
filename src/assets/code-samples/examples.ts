@@ -99,6 +99,7 @@ END ProducerConsumer;`,
     ]);
 
     getSamples(): Map<string, string> {
-        return this.samples;
+        //return this.samples;
+        return new Map<string, string>([['HelloWorld.Com', this.samples.get('HelloWorld.Com') ?? '']]);
     }
 }

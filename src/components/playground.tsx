@@ -28,7 +28,7 @@ export class Playground extends Component<unknown, ComponentState> {
     private static readonly defaultSelection = 'HelloWorld.Com';
     private static readonly samples = new CodeSamples();
 
-    static lastCode: string = Playground.samples.getSamples().get(Playground.defaultSelection) ?? '';
+    private static lastCode: string = Playground.samples.getSamples().get(Playground.defaultSelection) ?? '';
 
     private output = '';
 
@@ -38,16 +38,16 @@ export class Playground extends Component<unknown, ComponentState> {
         }),
     );
 
-    printError(err: unknown): void {
+    private printError(err: unknown): void {
         this.output = this.output + '\n!!! ' + err + ' !!!\n\n';
         this.setState({ runCode: true, runningCode: false });
     }
 
-    updateCode(): void {
+    private updateCode(): void {
         this.setState({ code: Playground.lastCode, runCode: true });
     }
 
-    runCode: () => Promise<void> = async () => {
+    private runCode: () => Promise<void> = async () => {
         this.setState({ runningCode: true });
         try {
             await this.system.run('', this.state.code);
@@ -57,7 +57,7 @@ export class Playground extends Component<unknown, ComponentState> {
         }
     };
 
-    cancelRunCode: () => Promise<void> = async () => {
+    private cancelRunCode: () => Promise<void> = async () => {
         try {
             await this.system.stop();
             this.output = '';
@@ -67,13 +67,13 @@ export class Playground extends Component<unknown, ComponentState> {
         }
     };
 
-    updateDropdownSelection: (event: ChangeEvent<HTMLSelectElement>) => void = (
+    private updateDropdownSelection: (event: ChangeEvent<HTMLSelectElement>) => void = (
         event: ChangeEvent<HTMLSelectElement>,
     ) => {
         this.setState({ selectedSample: event.target.value });
     };
 
-    renderDropdown(): JSX.Element {
+    private renderDropdown(): JSX.Element {
         const samplesDropdown = new Array<JSX.Element>();
         for (const key of Playground.samples.getSamples().keys()) {
             samplesDropdown.push(<option data-tokens={`${key}`}>{key}</option>);
@@ -90,17 +90,17 @@ export class Playground extends Component<unknown, ComponentState> {
         );
     }
 
-    loadSample: () => void = () => {
+    private loadSample: () => void = () => {
         Playground.lastCode = Playground.samples.getSamples().get(this.state.selectedSample) ?? Playground.lastCode;
         this.updateCode();
     };
 
-    clearOutput: () => void = () => {
+    private clearOutput: () => void = () => {
         this.output = '';
         this.setState({ runCode: false });
     };
 
-    renderRunCancelButton(cssClass: string, text: string, fn: () => void): JSX.Element {
+    private renderRunCancelButton(cssClass: string, text: string, fn: () => void): JSX.Element {
         return (
             <button type="button" className={`btn btn-${cssClass}`} onClick={fn.bind(this)}>
                 {text}
@@ -108,7 +108,7 @@ export class Playground extends Component<unknown, ComponentState> {
         );
     }
 
-    renderPlayground(): JSX.Element {
+    private renderPlayground(): JSX.Element {
         return (
             <div>
                 <div className="mb-1 pb-1">
@@ -158,7 +158,7 @@ export class Playground extends Component<unknown, ComponentState> {
         return (
             <div className="container">
                 <h3>Composita Language Playground</h3>
-                {this.renderPlayground()}{' '}
+                {this.renderPlayground()}
             </div>
         );
     }

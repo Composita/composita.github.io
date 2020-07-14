@@ -1,7 +1,7 @@
 import { default as React, Component } from 'react';
 
 export class DevInfo extends Component {
-    renderDev(): JSX.Element {
+    private renderDev(): JSX.Element {
         return (
             <div>
                 <p>Currently the source is only available through the npm registry.</p>

@@ -2,7 +2,7 @@ import { default as React, Component } from 'react';
 import { Link } from 'react-router-dom';
 
 export class Home extends Component {
-    renderHome(): JSX.Element {
+    private renderHome(): JSX.Element {
         return (
             <div>
                 <p>This page will be the new home for the Composita language (at least for now).</p>

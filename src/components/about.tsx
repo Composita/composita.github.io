@@ -1,7 +1,7 @@
 import { default as React, Component } from 'react';
 
 export class About extends Component {
-    renderAbout(): JSX.Element {
+    private renderAbout(): JSX.Element {
         return (
             <div>
                 <p>Thank you for checking out the Composita langauge.</p>

@@ -11,18 +11,19 @@ class Navigation extends Component<RouteComponentProps, ComponentState> {
         super(props);
         this.state = { navbarCollapsed: true };
     }
-    setActiveCSS(route: string): string {
+
+    private setActiveCSS(route: string): string {
         if (this.props.location.pathname === route) {
             return 'active';
         }
         return '';
     }
 
-    setSRCurrent(route: string): JSX.Element {
+    private setSRCurrent(route: string): JSX.Element {
         return <span className="sr-only">{this.props.location.pathname === route ? '(current)' : ''}</span>;
     }
 
-    onNavbarCollaps: () => void = () => {
+    private onNavbarCollaps: () => void = () => {
         console.log(this.state.navbarCollapsed);
         this.setState({ navbarCollapsed: !this.state.navbarCollapsed });
     };
