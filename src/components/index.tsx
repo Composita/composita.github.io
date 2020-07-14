@@ -11,16 +11,18 @@ import { default as Navigation } from './navigation';
 export class Index extends Component {
     render(): JSX.Element {
         return (
-            <div className="App">
+            <div className="d-flex flex-column overflow-hidden min-vh-100 vh-100">
                 <Router>
                     <Navigation />
-                    <Switch>
-                        <Route path="/" exact component={() => <Home />} />
-                        <Route path="/play" exact component={() => <Playground />} />
-                        <Route path="/dev" exact component={() => <DevInfo />} />
-                        <Route path="/about" exact component={() => <About />} />
-                        <Route path="/license" exact component={() => <License />} />
-                    </Switch>
+                    <main role="main" className="flex-grow-1 overflow-auto pt-2 mb-4">
+                        <Switch>
+                            <Route path="/" exact component={() => <Home />} />
+                            <Route path="/play" exact component={() => <Playground />} />
+                            <Route path="/dev" exact component={() => <DevInfo />} />
+                            <Route path="/about" exact component={() => <About />} />
+                            <Route path="/license" exact component={() => <License />} />
+                        </Switch>
+                    </main>
                     <Footer />
                 </Router>
             </div>

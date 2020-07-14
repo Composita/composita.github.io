@@ -2,7 +2,15 @@ import { default as React, Component } from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Icon } from '../assets/svg/composita-icon';
 
-class Navigation extends Component<RouteComponentProps> {
+interface ComponentState {
+    navbarCollapsed: boolean;
+}
+
+class Navigation extends Component<RouteComponentProps, ComponentState> {
+    constructor(props: RouteComponentProps) {
+        super(props);
+        this.state = { navbarCollapsed: true };
+    }
     setActiveCSS(route: string): string {
         if (this.props.location.pathname === route) {
             return 'active';
@@ -14,9 +22,14 @@ class Navigation extends Component<RouteComponentProps> {
         return <span className="sr-only">{this.props.location.pathname === route ? '(current)' : ''}</span>;
     }
 
+    onNavbarCollaps: () => void = () => {
+        console.log(this.state.navbarCollapsed);
+        this.setState({ navbarCollapsed: !this.state.navbarCollapsed });
+    };
+
     render(): JSX.Element {
         return (
-            <div className="navigation">
+            <header>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <div className="container">
                         <Link className="navbar-brand" to="/">
@@ -26,17 +39,18 @@ class Navigation extends Component<RouteComponentProps> {
                             Composita
                         </Link>
                         <button
-                            className="navbar-toggler"
+                            className="navbar-toggler collapsed"
                             type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarText"
-                            aria-controls="navbarText"
-                            aria-expanded="false"
+                            onClick={this.onNavbarCollaps}
+                            aria-expanded="true"
                             aria-label="Toggle navigation"
                         >
                             <span className="navbar-toggler-icon"></span>
                         </button>
-                        <div className="collapse navbar-collapse" id="navbarText">
+                        <div
+                            className={`${this.state.navbarCollapsed ? 'collapse' : ''} navbar-collapse`}
+                            id="navbarItems"
+                        >
                             <ul className="navbar-nav mr-auto">
                                 <li className={`nav-item ${this.setActiveCSS('/')}`}>
                                     <Link className="nav-link" to="/">
@@ -67,7 +81,7 @@ class Navigation extends Component<RouteComponentProps> {
                         </div>
                     </div>
                 </nav>
-            </div>
+            </header>
         );
     }
 }
