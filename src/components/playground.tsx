@@ -115,7 +115,7 @@ export class Playground extends Component<unknown, ComponentState> {
                             editor.setCursor(position.line, position.ch);
                         }}
                     />
-                    <div className="d-flex justify-content-between">
+                    <div className="d-flex justify-content-between pt-1">
                         <div>
                             {this.state.runningCode
                                 ? this.renderRunCancelButton('danger', 'Cancel', this.cancelRunCode)
@@ -128,10 +128,10 @@ export class Playground extends Component<unknown, ComponentState> {
                     </div>
                 </div>
                 <div className="pt-3">
-                    <p>Output:</p>
+                    <div>Output:</div>
                     {this.state.runCode ? (
                         <div className="border">
-                            <pre className="pre-scrollable m-1">{this.output}</pre>
+                            <pre className="pre-scrollable pt-1 m-1">{this.output}</pre>
                         </div>
                     ) : (
                         <div></div>
