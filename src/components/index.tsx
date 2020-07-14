@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch, HashRouter } from 'react-router-dom';
 import { Home } from './home';
 import { About } from './about';
 import { Playground } from './playground';
@@ -12,7 +12,7 @@ export class Index extends Component {
     render(): JSX.Element {
         return (
             <div className="d-flex flex-column overflow-hidden min-vh-100 vh-100">
-                <Router>
+                <HashRouter basename="/">
                     <Navigation />
                     <main role="main" className="flex-grow-1 overflow-auto pt-2 mb-4">
                         <Switch>
@@ -24,7 +24,7 @@ export class Index extends Component {
                         </Switch>
                     </main>
                     <Footer />
-                </Router>
+                </HashRouter>
             </div>
         );
     }
