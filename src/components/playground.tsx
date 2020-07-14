@@ -38,20 +38,33 @@ export class Playground extends Component<unknown, ComponentState> {
         }),
     );
 
+    printError(err: unknown): void {
+        this.output = this.output + '\n!!! ' + err + ' !!!\n\n';
+        this.setState({ runCode: true, runningCode: false });
+    }
+
     updateCode(): void {
-        this.setState({ code: Playground.lastCode, runCode: false });
+        this.setState({ code: Playground.lastCode, runCode: true });
     }
 
     runCode: () => Promise<void> = async () => {
         this.setState({ runningCode: true });
-        await this.system.run('', this.state.code);
-        this.setState({ runCode: true, runningCode: false });
+        try {
+            await this.system.run('', this.state.code);
+            this.setState({ runCode: true, runningCode: false });
+        } catch (err) {
+            this.printError(err);
+        }
     };
 
-    cancelRunCode: () => void = () => {
-        //await this.system.stop();
-        this.output = '';
-        this.setState({ runCode: false, runningCode: false });
+    cancelRunCode: () => Promise<void> = async () => {
+        try {
+            await this.system.stop();
+            this.output = '';
+            this.setState({ runCode: true, runningCode: false });
+        } catch (err) {
+            this.printError(err);
+        }
     };
 
     updateDropdownSelection: (event: ChangeEvent<HTMLSelectElement>) => void = (
