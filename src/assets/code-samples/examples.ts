@@ -4,7 +4,7 @@ export class CodeSamples {
             'HelloWorld.Com',
             `COMPONENT HelloWorld;
   BEGIN
-    WRITE("Hello World"); WRITELINE;
+    WRITE("Hello World"); WRITELINE
 END HelloWorld;`,
         ],
         [

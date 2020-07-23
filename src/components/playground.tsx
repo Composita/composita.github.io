@@ -10,6 +10,7 @@ import { CodeSamples } from '../assets/code-samples/examples';
 interface ComponentState {
     code: string;
     runCode: boolean;
+    output: string;
     selectedSample: string;
     runningCode: boolean;
 }
@@ -20,6 +21,7 @@ export class Playground extends Component<unknown, ComponentState> {
         this.state = {
             runCode: false,
             code: Playground.lastCode,
+            output: '',
             selectedSample: Playground.defaultSelection,
             runningCode: false,
         };
@@ -28,18 +30,22 @@ export class Playground extends Component<unknown, ComponentState> {
     private static readonly defaultSelection = 'HelloWorld.Com';
     private static readonly samples = new CodeSamples();
 
+    componentDidMount(): void {
+        //this.worker = new WebWorker(worker);
+        //this.worker.getWorker().addEventListener('message', (event) => this.updateOutput(event.data));
+        //this.worker = new SystemWorker();
+    }
+
     private static lastCode: string = Playground.samples.getSamples().get(Playground.defaultSelection) ?? '';
 
-    private output = '';
+    private updateOutput(msg: string): void {
+        this.setState({ output: this.state.output + msg });
+    }
 
-    private readonly system = new System((...msgs: Array<string>) =>
-        msgs.forEach((msg) => {
-            this.output = this.output + msg;
-        }),
-    );
+    private readonly system = new System((...msgs: Array<string>) => msgs.forEach(this.updateOutput.bind(this)));
 
     private printError(err: unknown): void {
-        this.output = this.output + '\n!!! ' + err + ' !!!\n\n';
+        this.updateOutput('\n!!! ' + err + ' !!!\n\n');
         this.setState({ runCode: true, runningCode: false });
     }
 
@@ -50,7 +56,7 @@ export class Playground extends Component<unknown, ComponentState> {
     private runCode: () => Promise<void> = async () => {
         this.setState({ runningCode: true });
         try {
-            await this.system.run('', this.state.code);
+            await this.system.run(this.state.selectedSample, this.state.code);
             this.setState({ runCode: true, runningCode: false });
         } catch (err) {
             this.printError(err);
@@ -60,7 +66,6 @@ export class Playground extends Component<unknown, ComponentState> {
     private cancelRunCode: () => Promise<void> = async () => {
         try {
             await this.system.stop();
-            this.output = '';
             this.setState({ runCode: true, runningCode: false });
         } catch (err) {
             this.printError(err);
@@ -80,10 +85,10 @@ export class Playground extends Component<unknown, ComponentState> {
         }
         return (
             <div className="d-flex mr-2">
-                <select className="ml-1 form-control" data-live-search="true" onChange={this.updateDropdownSelection}>
+                <select className="form-control pt-1" data-live-search="true" onChange={this.updateDropdownSelection}>
                     {samplesDropdown}
                 </select>
-                <button type="button" className="btn btn-info ml-1" onClick={this.loadSample}>
+                <button type="button" className="btn btn-info mr-1 pt-1" onClick={this.loadSample}>
                     Load
                 </button>
             </div>
@@ -96,13 +101,12 @@ export class Playground extends Component<unknown, ComponentState> {
     };
 
     private clearOutput: () => void = () => {
-        this.output = '';
-        this.setState({ runCode: false });
+        this.setState({ output: '', runCode: false });
     };
 
     private renderRunCancelButton(cssClass: string, text: string, fn: () => void): JSX.Element {
         return (
-            <button type="button" className={`btn btn-${cssClass}`} onClick={fn.bind(this)}>
+            <button type="button" className={`btn btn-${cssClass} pt-1 mr-1`} onClick={fn.bind(this)}>
                 {text}
             </button>
         );
@@ -133,7 +137,7 @@ export class Playground extends Component<unknown, ComponentState> {
                             {this.state.runningCode
                                 ? this.renderRunCancelButton('danger', 'Cancel', this.cancelRunCode)
                                 : this.renderRunCancelButton('success', 'Run', this.runCode)}
-                            <button type="button" className="btn btn-secondary ml-1" onClick={this.clearOutput}>
+                            <button type="button" className="btn btn-secondary pt-1" onClick={this.clearOutput}>
                                 Clear Output
                             </button>
                         </div>
@@ -144,7 +148,7 @@ export class Playground extends Component<unknown, ComponentState> {
                     <div>Output:</div>
                     {this.state.runCode ? (
                         <div className="border">
-                            <pre className="pre-scrollable pt-1 m-1">{this.output}</pre>
+                            <pre className="pre-scrollable pt-1 m-1">{this.state.output}</pre>
                         </div>
                     ) : (
                         <div></div>
