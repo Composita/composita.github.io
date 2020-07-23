@@ -9,6 +9,11 @@
       "ES2020"
     ],
   
+    "typeRoots": [
+      "src/types",
+      "node_modules/@types"
+    ],
+
     "declaration": true,
     "sourceMap": true,
     "isolatedModules": true,

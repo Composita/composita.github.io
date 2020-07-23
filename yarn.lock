@@ -1214,10 +1214,10 @@
     "@composita/ts-utility-types" "^0.1.0-dev.7"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/runtime@^0.1.0-dev.9":
-  version "0.1.0-dev.9"
-  resolved "https://registry.yarnpkg.com/@composita/runtime/-/runtime-0.1.0-dev.9.tgz#3914ca4914b9094981e7337fc82975b61f2c5e69"
-  integrity sha512-eBBwHxRVhUkW3MZ2XHyUHqxDa3rczHq1bMhQuAZkMv3Cke7kMJKObksFhhgqarWHqIFRA2StDLu9K02LS1sjeQ==
+"@composita/runtime@^0.1.0-dev.11":
+  version "0.1.0-dev.11"
+  resolved "https://registry.yarnpkg.com/@composita/runtime/-/runtime-0.1.0-dev.11.tgz#e2e9a3b956fd2429d6081f0a91ef45ee8e819c0a"
+  integrity sha512-ZvzONZ7ejkA0AmVHnBROS1syvaqCn3Y+/XcSaBaD4u0MPB6KSwrYWlOSSf/mnSizzN8V4KN4L9rOEhT4J0TjGQ==
   dependencies:
     "@composita/il" "^0.1.0-dev.15"
     "@composita/interpreter" "^0.1.0-dev.18"
@@ -1252,14 +1252,14 @@
     "@composita/ts-utility-types" "^0.1.0-dev.7"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/system@^0.1.0-dev.16":
-  version "0.1.0-dev.16"
-  resolved "https://registry.yarnpkg.com/@composita/system/-/system-0.1.0-dev.16.tgz#470de9f8afdef92d7c6a459a5f3216be6fb25b42"
-  integrity sha512-6IZvZPF/Mc9YslxfobQWgpA7/lWtrgBAyXXYpbY0oqA0dd43Qo8HMs6wVmINWIY8u0LcuC0SdNmDholOPaxpFQ==
+"@composita/system@^0.1.0-dev.17":
+  version "0.1.0-dev.17"
+  resolved "https://registry.yarnpkg.com/@composita/system/-/system-0.1.0-dev.17.tgz#7aac75f0065de6305b5889ce1d516fd03a22f46f"
+  integrity sha512-UB1KXQ39BFkhPfNDqBOQezbCeHe2NIAk3dEKf/5tAsifrdZS9HQJi4jFbCXL3vk52zXslp70HxMuEwXDS+ZS4Q==
   dependencies:
     "@composita/compiler" "^0.1.0-dev.15"
     "@composita/il" "^0.1.0-dev.15"
-    "@composita/runtime" "^0.1.0-dev.9"
+    "@composita/runtime" "^0.1.0-dev.11"
     "@composita/ts-utility-types" "^0.1.0-dev.7"
     vscode-languageserver-types "^3.15.1"
 
@@ -6986,7 +6986,7 @@ loader-utils@1.2.3:
     emojis-list "^2.0.0"
     json5 "^1.0.1"
 
-loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
+loader-utils@^1.0.0, loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.4.0.tgz#c579b5e34cb34b1a74edc6c1fb36bfa371d5a613"
   integrity sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==
@@ -9133,6 +9133,13 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-app-rewired@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/react-app-rewired/-/react-app-rewired-2.1.6.tgz#33ee3076a7f34d6a7c94e649cac67e7c8c580de8"
+  integrity sha512-06flj0kK5tf/RN4naRv/sn6j3sQd7rsURoRLKLpffXDzJeNiAaTNic+0I8Basojy5WDwREkTqrMLewSAjcb13w==
+  dependencies:
+    semver "^5.6.0"
+
 react-codemirror2@^7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.2.1.tgz#38dab492fcbe5fb8ebf5630e5bb7922db8d3a10c"
@@ -9780,6 +9787,14 @@ scheduler@^0.19.1:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+schema-utils@^0.4.0:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.4.7.tgz#ba74f597d2be2ea880131746ee17d0a093c68187"
+  integrity sha512-v/iwU6wvwGK8HbU9yi3/nhGzP0yGSuhQMzL6ySiec1FSrZZDkhm4noOSWzrNFo/jEc+SJY6jRTwuwbSXJPDUnQ==
+  dependencies:
+    ajv "^6.1.0"
+    ajv-keywords "^3.1.0"
 
 schema-utils@^1.0.0:
   version "1.0.0"
@@ -11375,6 +11390,14 @@ worker-farm@^1.7.0:
   integrity sha512-rvw3QTZc8lAxyVrqcSGVm5yP/IJ2UcB3U0graE3LCFoZ0Yn2x4EoVSqJKdB/T5M+FLcRPjz4TDacRf3OCfNUzw==
   dependencies:
     errno "~0.1.7"
+
+worker-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-2.0.0.tgz#45fda3ef76aca815771a89107399ee4119b430ac"
+  integrity sha512-tnvNp4K3KQOpfRnD20m8xltE3eWh89Ye+5oj7wXEEHKac1P4oZ6p9oTj8/8ExqoSBnk9nu5Pr4nKfQ1hn2APJw==
+  dependencies:
+    loader-utils "^1.0.0"
+    schema-utils "^0.4.0"
 
 worker-rpc@^0.1.0:
   version "0.1.1"

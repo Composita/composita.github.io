@@ -1,11 +1,13 @@
 import { default as React, Component, ChangeEvent } from 'react';
-import { System } from '@composita/system';
+import { Optional } from '@composita/ts-utility-types';
 
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 
 import { CodeSamples } from '../assets/code-samples/examples';
+
+import { default as CompositaSystem } from '../workers/system.worker';
 
 interface ComponentState {
     code: string;
@@ -29,24 +31,24 @@ export class Playground extends Component<unknown, ComponentState> {
 
     private static readonly defaultSelection = 'HelloWorld.Com';
     private static readonly samples = new CodeSamples();
+    private runner: Optional<Worker> = undefined;
 
-    componentDidMount(): void {
-        //this.worker = new WebWorker(worker);
-        //this.worker.getWorker().addEventListener('message', (event) => this.updateOutput(event.data));
-        //this.worker = new SystemWorker();
-    }
+    // trying to fix things
+    private static outputBuffer = '';
+    private static bufferLength = 10000;
 
     private static lastCode: string = Playground.samples.getSamples().get(Playground.defaultSelection) ?? '';
 
     private updateOutput(msg: string): void {
-        this.setState({ output: this.state.output + msg });
-    }
-
-    private readonly system = new System((...msgs: Array<string>) => msgs.forEach(this.updateOutput.bind(this)));
-
-    private printError(err: unknown): void {
-        this.updateOutput('\n!!! ' + err + ' !!!\n\n');
-        this.setState({ runCode: true, runningCode: false });
+        if (msg === undefined) {
+            return;
+        }
+        if (Playground.outputBuffer.length < Playground.bufferLength && this.state.runningCode) {
+            Playground.outputBuffer = Playground.outputBuffer + msg;
+        } else {
+            this.setState({ output: this.state.output + Playground.outputBuffer + msg });
+            Playground.outputBuffer = '';
+        }
     }
 
     private updateCode(): void {
@@ -55,21 +57,13 @@ export class Playground extends Component<unknown, ComponentState> {
 
     private runCode: () => Promise<void> = async () => {
         this.setState({ runningCode: true });
-        try {
-            await this.system.run(this.state.selectedSample, this.state.code);
-            this.setState({ runCode: true, runningCode: false });
-        } catch (err) {
-            this.printError(err);
-        }
+        this.runner?.postMessage({ fn: 'run', uri: this.state.selectedSample, code: this.state.code });
+        this.setState({ runCode: true });
     };
 
     private cancelRunCode: () => Promise<void> = async () => {
-        try {
-            await this.system.stop();
-            this.setState({ runCode: true, runningCode: false });
-        } catch (err) {
-            this.printError(err);
-        }
+        this.runner?.postMessage({ fn: 'stop' });
+        this.setState({ runCode: true });
     };
 
     private updateDropdownSelection: (event: ChangeEvent<HTMLSelectElement>) => void = (
@@ -110,6 +104,19 @@ export class Playground extends Component<unknown, ComponentState> {
                 {text}
             </button>
         );
+    }
+
+    componentDidMount(): void {
+        this.runner = CompositaSystem;
+        this.runner.addEventListener('message', (event: { data: { output: string; running: boolean } }) => {
+            this.updateOutput(event.data.output);
+            this.setState({ runningCode: event.data.running });
+        });
+    }
+
+    componentWillUnmount(): void {
+        this.runner?.postMessage({ fn: 'stop', uri: '', code: '' });
+        this.runner?.terminate();
     }
 
     private renderPlayground(): JSX.Element {

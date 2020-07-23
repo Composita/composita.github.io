@@ -28,14 +28,17 @@
     ]
   },
   "dependencies": {
-    "@composita/system": "^0.1.0-dev.16",
+    "@composita/system": "^0.1.0-dev.17",
     "bootstrap": "^4.5.0",
     "codemirror": "^5.56.0",
     "jquery": "^3.5.1",
     "react": "^16.13.1",
+    "react-app-rewired": "^2.1.6",
     "react-codemirror2": "^7.2.1",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "webpack": "4.42.0",
+    "worker-loader": "^2.0.0"
   },
   "devDependencies": {
     "@composita/ts-utility-types": "^0.1.0-dev.7",
