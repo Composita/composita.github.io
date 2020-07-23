@@ -33,22 +33,13 @@ export class Playground extends Component<unknown, ComponentState> {
     private static readonly samples = new CodeSamples();
     private runner: Optional<Worker> = undefined;
 
-    // trying to fix things
-    private static outputBuffer = '';
-    private static bufferLength = 10000;
-
     private static lastCode: string = Playground.samples.getSamples().get(Playground.defaultSelection) ?? '';
 
     private updateOutput(msg: string): void {
         if (msg === undefined) {
             return;
         }
-        if (Playground.outputBuffer.length < Playground.bufferLength && this.state.runningCode) {
-            Playground.outputBuffer = Playground.outputBuffer + msg;
-        } else {
-            this.setState({ output: this.state.output + Playground.outputBuffer + msg });
-            Playground.outputBuffer = '';
-        }
+        this.setState({ output: this.state.output + msg });
     }
 
     private updateCode(): void {

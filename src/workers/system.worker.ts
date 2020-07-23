@@ -4,14 +4,33 @@ import { System } from '@composita/system';
 /* eslint-disable no-restricted-globals */
 const ctx: Worker = self as any;
 
-function capture(...msgs: Array<string>): void {
-    msgs.forEach((msg) => ctx.postMessage({ output: msg, running: isRunning }));
-}
+let messageCache = '';
+const cacheLength = 10000;
 
 let isRunning = false;
 
+function post(): void {
+    ctx.postMessage({ output: messageCache, running: isRunning });
+    messageCache = '';
+}
+
+function capture(...msgs: Array<string>): void {
+    const publish = !(messageCache.length < cacheLength && isRunning);
+    msgs.forEach((msg) => {
+        if (msg !== undefined) {
+            messageCache = messageCache + msg;
+        }
+    });
+    if (publish && messageCache !== undefined) {
+        post();
+    }
+}
+
 function updater(update: boolean): void {
     isRunning = update;
+    if (!isRunning) {
+        post();
+    }
     ctx.postMessage({ output: '', running: isRunning });
 }
 
@@ -25,8 +44,9 @@ function postError(msg: string): void {
 ctx.onmessage = async (event) => {
     if (event.data.fn === 'run') {
         try {
-            await system.run(event.data.uri, event.data.code);
+            isRunning = true;
             ctx.postMessage({ output: '', running: isRunning });
+            await system.run(event.data.uri, event.data.code);
         } catch (err) {
             postError(err.message);
         }
