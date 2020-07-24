@@ -4,11 +4,11 @@ export class About extends Component {
     private renderAbout(): JSX.Element {
         return (
             <div>
-                <p>Thank you for checking out the Composita langauge.</p>
+                <p>Thank you for checking out the Composita language.</p>
                 <p>This site was created as part of my master thesis and is still a work in progress.</p>
                 <p>
-                    If you want to know more about the Composita language feel free to check out any of the following
-                    links:
+                    If you want to know more about the Composita ystem and languge feel free to check out any of the
+                    following links:
                     <ul>
                         <li>
                             <a href="https://concurrency.ch/Research/Composita">HSR Concurrency Lab (Composita)</a>

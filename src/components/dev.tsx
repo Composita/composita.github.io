@@ -4,9 +4,12 @@ export class DevInfo extends Component {
     private renderDev(): JSX.Element {
         return (
             <div>
-                <p>Currently the source is only available through the npm registry.</p>
                 <p>
-                    The packages are published under the{' '}
+                    All source code is published and freely available on{' '}
+                    <a href="https://www.github.com/Composita">github.com/Composita</a>
+                </p>
+                <p>
+                    The node packages are published under the{' '}
                     <a href="https://www.npmjs.com/org/composita">@composita organisation</a>
                 </p>
             </div>
