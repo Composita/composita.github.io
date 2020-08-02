@@ -107,7 +107,8 @@ export class Playground extends Component<unknown, ComponentState> {
 
     componentWillUnmount(): void {
         this.runner?.postMessage({ fn: 'stop', uri: '', code: '' });
-        this.runner?.terminate();
+        // TODO: this.runner is of type Window not Worker, need to figure out why.
+        //this.runner?.terminate();
     }
 
     private renderPlayground(): JSX.Element {

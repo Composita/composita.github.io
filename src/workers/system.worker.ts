@@ -1,51 +1,37 @@
 import { System } from '@composita/system';
 
+// inspired from https://stackoverflow.com/questions/53818157/using-webpack-worker-loader-with-typescript-causes-cannot-find-module-error
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-restricted-globals */
 const ctx: Worker = self as any;
 
-let messageCache = '';
-const cacheLength = 10000;
-
 let isRunning = false;
 
-function post(): void {
-    ctx.postMessage({ output: messageCache, running: isRunning });
-    messageCache = '';
-}
-
 function capture(...msgs: Array<string>): void {
-    const publish = !(messageCache.length < cacheLength && isRunning);
     msgs.forEach((msg) => {
         if (msg !== undefined) {
-            messageCache = messageCache + msg;
+            ctx.postMessage({ output: msg, running: isRunning });
         }
     });
-    if (publish && messageCache !== undefined) {
-        post();
-    }
 }
 
 function updater(update: boolean): void {
     isRunning = update;
-    if (!isRunning) {
-        post();
-    }
     ctx.postMessage({ output: '', running: isRunning });
 }
-
-const system = new System(capture.bind(this), updater.bind(this));
 
 function postError(msg: string): void {
     isRunning = false;
     ctx.postMessage({ output: `\n!!! ${msg} !!!\n\n`, running: isRunning });
 }
 
+const system = new System(capture.bind(ctx), updater.bind(ctx));
+
 ctx.onmessage = async (event) => {
     if (event.data.fn === 'run') {
         try {
-            isRunning = true;
-            ctx.postMessage({ output: '', running: isRunning });
+            updater(true);
             await system.run(event.data.uri, event.data.code);
         } catch (err) {
             postError(err.message);
@@ -55,8 +41,6 @@ ctx.onmessage = async (event) => {
     if (event.data.fn === 'stop') {
         try {
             await system.stop();
-            isRunning = false;
-            ctx.postMessage({ output: '', running: isRunning });
         } catch (err) {
             postError(err.message);
         }
