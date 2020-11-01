@@ -5,19 +5,18 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "serve: deploy",
-            "dependsOn": [ "yarn: predeploy" ],
-            "command": "serve",
+            "label": "yarn: start",
+            "dependsOn": [ "yarn: build" ],
+            "command": "yarn",
             "args": [
-                "-s",
-                "build",
+                "start",
             ],
             "group": "build",
         },
         {
             "type": "shell",
             "label": "yarn: build",
-            "dependsOn": [ ],
+            "dependsOn": [ "yarn: install" ],
             "command": "yarn",
             "args": [
                 "build",
@@ -26,6 +25,13 @@
                 "kind": "build",
                 "isDefault": true
             }
-        }
+        },
+        {
+            "type": "shell",
+            "label": "yarn: install",
+            "command": "yarn",
+            "args": [ ],
+            "group": "build",
+        },
     ]
 }
