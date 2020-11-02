@@ -8,6 +8,25 @@ export class CodeSamples {
 END HelloWorld;`,
         ],
         [
+            'SkipCounter.Com',
+            `COMPONENT SkipCounter;
+  VARIABLE
+    i: INTEGER;
+    j: INTEGER;
+    max: INTEGER;
+  BEGIN
+    i := 1;
+    j := 1;
+    max := 100000;
+    WHILE (i < max) DO
+      WRITE(i);
+      INC(i, j);
+      INC(j);
+      WRITELINE
+    END
+END SkipCounter;`,
+        ],
+        [
             'ProducerConsumer.Com',
             `COMPONENT ProducerConsumer;
     CONSTANT 
@@ -100,6 +119,9 @@ END ProducerConsumer;`,
 
     getSamples(): Map<string, string> {
         //return this.samples;
-        return new Map<string, string>([['HelloWorld.Com', this.samples.get('HelloWorld.Com') ?? '']]);
+        return new Map<string, string>([
+            ['HelloWorld.Com', this.samples.get('HelloWorld.Com') ?? ''],
+            ['SkipCounter.Com', this.samples.get('SkipCounter.Com') ?? ''],
+        ]);
     }
 }

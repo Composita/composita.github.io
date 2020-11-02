@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "@composita/system": "^0.2.1",
+    "@composita/system": "^0.2.3",
     "bootstrap": "^4.5.3",
     "codemirror": "^5.58.2",
     "jquery": "^3.5.1",
