@@ -7,7 +7,7 @@ import 'codemirror/lib/codemirror.css';
 
 import { CodeSamples } from '../assets/code-samples/examples';
 
-import { default as CompositaSystem } from '../workers/system.worker';
+import { default as CompositaSystem } from 'worker-loader!../workers/system.worker';
 
 interface ComponentState {
     code: string;
@@ -65,8 +65,12 @@ export class Playground extends Component<unknown, ComponentState> {
 
     private renderDropdown(): JSX.Element {
         const samplesDropdown = new Array<JSX.Element>();
-        for (const key of Playground.samples.getSamples().keys()) {
-            samplesDropdown.push(<option data-tokens={`${key}`}>{key}</option>);
+        for (const filename of Playground.samples.getSamples().keys()) {
+            samplesDropdown.push(
+                <option key={filename} data-tokens={`${filename}`}>
+                    {filename}
+                </option>,
+            );
         }
         return (
             <div className="d-flex mr-2">
@@ -98,7 +102,7 @@ export class Playground extends Component<unknown, ComponentState> {
     }
 
     componentDidMount(): void {
-        this.runner = CompositaSystem;
+        this.runner = new CompositaSystem();
         this.runner.addEventListener('message', (event: { data: { output: string; running: boolean } }) => {
             this.updateOutput(event.data.output);
             this.setState({ runningCode: event.data.running });
@@ -107,8 +111,7 @@ export class Playground extends Component<unknown, ComponentState> {
 
     componentWillUnmount(): void {
         this.runner?.postMessage({ fn: 'stop', uri: '', code: '' });
-        // TODO: this.runner is of type Window not Worker, need to figure out why.
-        //this.runner?.terminate();
+        this.runner?.terminate();
     }
 
     private renderPlayground(): JSX.Element {
