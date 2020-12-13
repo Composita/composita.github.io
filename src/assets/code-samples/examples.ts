@@ -1,15 +1,59 @@
 export class CodeSamples {
     private readonly samples: Map<string, string> = new Map<string, string>([
         [
-            'HelloWorld.Com',
-            `COMPONENT HelloWorld;
+            'ComponentHelloWorld.Com',
+            `INTERFACE HelloWorld;
+  { IN Hello(hello: TEXT) OUT World(world: TEXT) } IN Bye
+END HelloWorld;
+
+COMPONENT CompHelloWorld OFFERS HelloWorld;
+  CONSTANT world = "World"; 
+  VARIABLE input: TEXT;
+  IMPLEMENTATION HelloWorld;
+    BEGIN
+      WRITE("Waiting for input.");
+      WHILE ?Hello DO
+        ?Hello(input);
+        WRITE("Server Received\\n");
+        WRITE(input);
+        WRITE("Server Sending\\n");
+        !World(world)
+      END
+  END HelloWorld;
   BEGIN
-    WRITE("Hello World"); WRITELINE
-END HelloWorld;`,
+    WRITE("Hello World Starting\\n")
+  FINALLY
+    WRITE("Goodbye Hello World\\n")
+END CompHelloWorld;
+
+COMPONENT CompSender REQUIRES HelloWorld;
+  VARIABLE world: TEXT; i: INTEGER;
+  ACTIVITY
+    WRITE("Starting Sender\\n");
+    FOR i := 1 TO 10 DO
+      WRITE("Client Sending.\\n");
+      HelloWorld!Hello("Hello");
+      WRITE("Client Receiving.\\n");
+      HelloWorld?World(world);
+      WRITE(world)
+    END;
+    HelloWorld!Bye
+END CompSender;
+
+COMPONENT { ENTRYPOINT } Connector;
+  VARIABLE helloWorld: CompHelloWorld; sender: CompSender;
+  BEGIN
+    WRITE("STARTING CONNECTOR\\n");
+    NEW(helloWorld);
+    NEW(sender);
+    CONNECT(HelloWorld(helloWorld), sender);
+    DELETE(helloWorld);
+    DELETE(sender)
+END Connector;`,
         ],
         [
             'SkipCounter.Com',
-            `COMPONENT SkipCounter;
+            `COMPONENT { ENTRYPOINT } SkipCounter;
   VARIABLE
     i: INTEGER;
     j: INTEGER;
@@ -27,8 +71,15 @@ END HelloWorld;`,
 END SkipCounter;`,
         ],
         [
+            'HelloWorld.Com',
+            `COMPONENT { ENTRYPOINT } HelloWorld;
+  BEGIN
+    WRITE("Hello World"); WRITELINE
+END HelloWorld;`,
+        ] /*,
+        [
             'ProducerConsumer.Com',
-            `COMPONENT ProducerConsumer;
+            `COMPONENT { ENTRYPOINT } ProducerConsumer;
     CONSTANT 
         N = 1; (* producers *)
         M = 1; (* consumers *)
@@ -114,14 +165,14 @@ END SkipCounter;`,
         FOR i := 1 TO M DO DELETE(consumer[i]) END;
         WRITE(SystemTime() - start); WRITE("ms"); WRITELINE
 END ProducerConsumer;`,
-        ],
+        ]*/,
     ]);
 
     getSamples(): Map<string, string> {
-        //return this.samples;
-        return new Map<string, string>([
-            ['HelloWorld.Com', this.samples.get('HelloWorld.Com') ?? ''],
-            ['SkipCounter.Com', this.samples.get('SkipCounter.Com') ?? ''],
-        ]);
+        return this.samples;
+        //return new Map<string, string>([
+        //    ['HelloWorld.Com', this.samples.get('HelloWorld.Com') ?? ''],
+        //    ['SkipCounter.Com', this.samples.get('SkipCounter.Com') ?? ''],
+        //]);
     }
 }

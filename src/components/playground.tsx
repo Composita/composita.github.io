@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: React gets flagged with TS6133, temporary hack
 import { default as React, Component, ChangeEvent } from 'react';
 import { Optional } from '@composita/ts-utility-types';
 
@@ -11,7 +13,6 @@ import { default as CompositaSystem } from 'worker-loader!../workers/system.work
 
 interface ComponentState {
     code: string;
-    runCode: boolean;
     output: string;
     selectedSample: string;
     runningCode: boolean;
@@ -21,15 +22,14 @@ export class Playground extends Component<unknown, ComponentState> {
     constructor(props: unknown) {
         super(props);
         this.state = {
-            runCode: false,
             code: Playground.lastCode,
-            output: '',
+            output: '> ',
             selectedSample: Playground.defaultSelection,
             runningCode: false,
         };
     }
 
-    private static readonly defaultSelection = 'HelloWorld.Com';
+    private static readonly defaultSelection = 'ComponentHelloWorld.Com';
     private static readonly samples = new CodeSamples();
     private runner: Optional<Worker> = undefined;
 
@@ -43,18 +43,16 @@ export class Playground extends Component<unknown, ComponentState> {
     }
 
     private updateCode(): void {
-        this.setState({ code: Playground.lastCode, runCode: true });
+        this.setState({ code: Playground.lastCode });
     }
 
     private runCode: () => Promise<void> = async () => {
-        this.setState({ runningCode: true });
+        this.setState({ output: this.state.output + 'Compiling and Running Code...\n' });
         this.runner?.postMessage({ fn: 'run', uri: this.state.selectedSample, code: this.state.code });
-        this.setState({ runCode: true });
     };
 
     private cancelRunCode: () => Promise<void> = async () => {
         this.runner?.postMessage({ fn: 'stop' });
-        this.setState({ runCode: true });
     };
 
     private updateDropdownSelection: (event: ChangeEvent<HTMLSelectElement>) => void = (
@@ -90,7 +88,7 @@ export class Playground extends Component<unknown, ComponentState> {
     };
 
     private clearOutput: () => void = () => {
-        this.setState({ output: '', runCode: false });
+        this.setState({ output: '> ' });
     };
 
     private renderRunCancelButton(cssClass: string, text: string, fn: () => void): JSX.Element {
@@ -148,13 +146,9 @@ export class Playground extends Component<unknown, ComponentState> {
                 </div>
                 <div className="pt-3">
                     <div>Output:</div>
-                    {this.state.runCode ? (
-                        <div className="border">
-                            <pre className="pre-scrollable pt-1 m-1">{this.state.output}</pre>
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
+                    <div className="border">
+                        <pre className="pre-scrollable pt-1 m-1">{this.state.output}</pre>
+                    </div>
                 </div>
             </div>
         );

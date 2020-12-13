@@ -33,6 +33,7 @@ ctx.onmessage = async (event) => {
         try {
             updater(true);
             await system.run(event.data.uri, event.data.code);
+            ctx.postMessage({ output: '\n> ', running: false });
         } catch (err) {
             postError(err.message);
         }

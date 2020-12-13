@@ -1,53 +1,26 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: React gets flagged with TS6133, temporary hack
 import { default as React, Component } from 'react';
 
-interface ComponentState {
-    license: string | undefined;
-    error: string | undefined;
-}
+export class License extends Component {
+    private static text = `Copyright (C) 2020 by Hansruedi Patzen <hp@revy.ch>
 
-export class License extends Component<unknown, ComponentState> {
-    constructor(props: unknown) {
-        super(props);
-        this.state = { license: License.text, error: undefined };
-    }
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-    private static text: string | undefined = undefined;
-
-    async componentDidMount(): Promise<void> {
-        if (License.text === undefined) {
-            try {
-                const response = await fetch('LICENSE.txt');
-                License.text = await response.text();
-            } catch (error) {
-                console.error(error);
-                this.setState({ license: undefined, error: error });
-                return;
-            }
-        }
-        this.setState({ license: License.text, error: undefined });
-    }
-
-    private renderLicense(): JSX.Element {
-        if (this.state.error !== undefined) {
-            return (
-                <pre>
-                    Failed to load license:
-                    <br />
-                    {this.state.error}
-                </pre>
-            );
-        }
-        if (this.state.license === undefined) {
-            return <p>Loading license...</p>;
-        }
-        return <pre>{this.state.license}</pre>;
-    }
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.`;
 
     render(): JSX.Element {
         return (
             <div className="container">
                 <h3>License</h3>
-                {this.renderLicense()}
+                <pre>{License.text}</pre>
             </div>
         );
     }
