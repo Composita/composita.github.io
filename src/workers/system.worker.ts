@@ -1,4 +1,5 @@
-import { System } from '@composita/system';
+import { Compiler } from '@composita/compiler';
+import { Runtime } from '@composita/runtime';
 
 // inspired from https://stackoverflow.com/questions/53818157/using-webpack-worker-loader-with-typescript-causes-cannot-find-module-error
 
@@ -18,7 +19,8 @@ function capture(...msgs: Array<string>): void {
 
 function updater(update: boolean): void {
     isRunning = update;
-    ctx.postMessage({ output: '', running: isRunning });
+    const msg = !isRunning ? '\n> ' : '';
+    ctx.postMessage({ output: msg, running: isRunning });
 }
 
 function postError(msg: string): void {
@@ -26,14 +28,17 @@ function postError(msg: string): void {
     ctx.postMessage({ output: `\n!!! ${msg} !!!\n\n`, running: isRunning });
 }
 
-const system = new System(capture.bind(ctx), updater.bind(ctx));
+const compiler = new Compiler();
+const runtime = new Runtime();
+runtime.changeOutput(capture.bind(ctx));
+runtime.isRunningUpdate(updater.bind(ctx));
 
-ctx.onmessage = async (event) => {
+ctx.onmessage = (event) => {
     if (event.data.fn === 'run') {
         try {
             updater(true);
-            await system.run(event.data.uri, event.data.code);
-            ctx.postMessage({ output: '\n> ', running: false });
+            const il = compiler.compile(event.data.uri, event.data.code);
+            runtime.run(il);
         } catch (err) {
             postError(err.message);
         }
@@ -41,7 +46,7 @@ ctx.onmessage = async (event) => {
 
     if (event.data.fn === 'stop') {
         try {
-            await system.stop();
+            runtime.halt();
         } catch (err) {
             postError(err.message);
         }
