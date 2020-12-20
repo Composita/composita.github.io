@@ -29,7 +29,7 @@ export class Playground extends Component<unknown, ComponentState> {
         };
     }
 
-    private static readonly defaultSelection = 'ComponentHelloWorld.Com';
+    private static readonly defaultSelection = 'ProducerConsumerAdvanced.Com';
     private static readonly samples = new CodeSamples();
     private runner: Optional<Worker> = undefined;
 

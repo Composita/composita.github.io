@@ -1,6 +1,95 @@
 export class CodeSamples {
     private readonly samples: Map<string, string> = new Map<string, string>([
         [
+            'ProducerConsumerAdvanced.Com',
+            `COMPONENT { ENTRYPOINT } ProducerConsumer;
+    CONSTANT
+        N = 1; (* producers *)
+        M = 1; (* consumers *)
+        K = 100000; (* original: 1000000; (* amount per producer *)
+        C = 10; (* buffer capacity *)
+        Output = TRUE; (* original: FALSE; *)
+
+    COMPONENT Producer REQUIRES DataAcceptor;
+        VARIABLE i: INTEGER;
+        ACTIVITY
+            FOR i := 1 TO K DO
+                DataAcceptor!Element(i)
+            END;
+            DataAcceptor!Finished
+    END Producer;
+
+    COMPONENT Consumer REQUIRES DataSource;
+        VARIABLE x: INTEGER;
+        ACTIVITY
+            WHILE DataSource?Element DO
+                DataSource?Element(x);
+                IF Output AND (x MOD (K DIV 10) = 0) THEN WRITE(x); WRITELINE END
+            END;
+            DataSource?Finished
+    END Consumer;
+
+    INTERFACE DataAcceptor;
+        { IN Element(x: INTEGER) } IN Finished
+    END DataAcceptor;
+
+    INTERFACE DataSource;
+        { OUT Element(x: INTEGER) } OUT Finished
+    END DataSource;
+
+    COMPONENT BoundedBuffer OFFERS DataAcceptor, DataSource;
+        VARIABLE
+            a[position: INTEGER]: INTEGER {ARRAY};
+            first, last: INTEGER;
+            nofProducers: INTEGER;
+
+        IMPLEMENTATION DataAcceptor;
+            BEGIN
+                WHILE ?Element DO {EXCLUSIVE}
+                    AWAIT(last-first < C);
+                    ?Element(a[last MOD C]); INC(last)
+                END;
+                ?Finished;
+                BEGIN {EXCLUSIVE} DEC(nofProducers) END
+        END DataAcceptor;
+
+        IMPLEMENTATION DataSource;
+            VARIABLE stop: BOOLEAN;
+            BEGIN
+                stop := FALSE;
+                REPEAT {EXCLUSIVE}
+                    AWAIT((first < last) OR (nofProducers = 0));
+                    IF first < last THEN
+                        !Element(a[first MOD C]); INC(first)
+                    ELSE stop := TRUE
+                    END
+                UNTIL stop;
+                !Finished
+        END DataSource;
+
+        BEGIN
+            first := 0; last := 0; nofProducers := N
+    END BoundedBuffer;
+
+    VARIABLE
+        buffer: BoundedBuffer;
+        producer[number: INTEGER]: Producer;
+        consumer[number: INTEGER]: Consumer;
+        i: INTEGER;
+    BEGIN
+        WRITE(N); WRITE(" producers "); WRITE(M); WRITE(" consumers"); WRITELINE;
+        NEW(buffer);
+        FOR i := 1 TO N DO
+            NEW(producer[i]); CONNECT(DataAcceptor(buffer), producer[i])
+        END;
+        FOR i := 1 TO M DO
+            NEW(consumer[i]); CONNECT(DataSource(buffer), consumer[i])
+        END;
+        FOR i := 1 TO M DO DELETE(consumer[i]) END;
+        WRITE("Done"); WRITELINE
+END ProducerConsumer;`,
+        ],
+        [
             'ComponentHelloWorld.Com',
             `INTERFACE HelloWorld;
   { IN Hello(hello: TEXT) OUT World(world: TEXT) } IN Done
