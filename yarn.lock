@@ -1158,10 +1158,10 @@
   dependencies:
     "@composita/ts-utility-types" "^0.3.0"
 
-"@composita/runtime@^0.5.8":
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/@composita/runtime/-/runtime-0.5.8.tgz#8eff5c424543c1a4eed55a4e4288313a07705524"
-  integrity sha512-5L4ZWEvtRAzcyDkGyNEer7Hh4G/NhOPvq2uETTABt1hteWSLHHFEyrwapIjoK/I1AyIIze//d1/e50IvKMJFMA==
+"@composita/runtime@^0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@composita/runtime/-/runtime-0.5.9.tgz#3df0aec721e79c03458f17c097a46ba97bdd212a"
+  integrity sha512-1ATePCWDLPzB6igbsdyizLOzb/5UrdmfslGtsEfm8VMQNj3vfhTkZGlKetN+hTYvLPg6h4jwz1tcrljgVGOzUA==
   dependencies:
     "@composita/il" "^0.5.2"
     "@composita/ts-utility-types" "^0.3.0"
