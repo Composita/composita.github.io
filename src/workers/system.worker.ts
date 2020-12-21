@@ -1,6 +1,5 @@
 import { Compiler } from '@composita/compiler';
 import { Runtime } from '@composita/runtime';
-import { Optional } from '@composita/ts-utility-types';
 
 // inspired from https://stackoverflow.com/questions/53818157/using-webpack-worker-loader-with-typescript-causes-cannot-find-module-error
 
@@ -30,31 +29,28 @@ function postError(msg: string): void {
 }
 
 const compiler = new Compiler();
-let runtime: Optional<Runtime>;
 
 function initRuntime(): void {
-    runtime = new Runtime();
-    runtime.changeOutput(capture.bind(ctx));
-    runtime.isRunningUpdate(updater.bind(ctx));
+    Runtime.instance().reset();
+    Runtime.instance().changeOutput(capture.bind(ctx));
+    Runtime.instance().isRunningUpdate(updater.bind(ctx));
 }
 
 ctx.onmessage = async (event) => {
     if (event.data.fn === 'run') {
+        initRuntime();
         try {
-            initRuntime();
             updater(true);
             const il = compiler.compile(event.data.uri, event.data.code);
-            await runtime?.run(il);
-            runtime = undefined;
+            await Runtime.instance().run(il);
         } catch (err) {
             console.log(err.stack);
             postError(err.message);
-            runtime = undefined;
         }
     }
 
     if (event.data.fn === 'stop') {
-        runtime?.halt();
+        Runtime.instance().halt();
     }
 };
 
