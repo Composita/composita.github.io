@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.249425a3.chunk.css",
-    "main.js": "/static/js/main.3a71f60e.chunk.js",
-    "main.js.map": "/static/js/main.3a71f60e.chunk.js.map",
+    "main.js": "/static/js/main.ae88d56f.chunk.js",
+    "main.js.map": "/static/js/main.ae88d56f.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.d3b42899.js",
     "runtime-main.js.map": "/static/js/runtime-main.d3b42899.js.map",
     "static/css/2.116d03ad.chunk.css": "/static/css/2.116d03ad.chunk.css",
@@ -12,14 +12,14 @@
     "static/css/2.116d03ad.chunk.css.map": "/static/css/2.116d03ad.chunk.css.map",
     "static/css/main.249425a3.chunk.css.map": "/static/css/main.249425a3.chunk.css.map",
     "static/js/2.1b33f976.chunk.js.LICENSE.txt": "/static/js/2.1b33f976.chunk.js.LICENSE.txt",
-    "static/js/system.worker.370a68b6.worker.js": "/static/js/system.worker.370a68b6.worker.js",
-    "static/js/system.worker.370a68b6.worker.js.map": "/static/js/system.worker.370a68b6.worker.js.map"
+    "static/js/system.worker.557ad31e.worker.js": "/static/js/system.worker.557ad31e.worker.js",
+    "static/js/system.worker.557ad31e.worker.js.map": "/static/js/system.worker.557ad31e.worker.js.map"
   },
   "entrypoints": [
     "static/js/runtime-main.d3b42899.js",
     "static/css/2.116d03ad.chunk.css",
     "static/js/2.1b33f976.chunk.js",
     "static/css/main.249425a3.chunk.css",
-    "static/js/main.3a71f60e.chunk.js"
+    "static/js/main.ae88d56f.chunk.js"
   ]
 }
