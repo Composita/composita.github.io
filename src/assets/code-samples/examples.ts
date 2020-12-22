@@ -160,6 +160,53 @@ END Connector;`,
 END IncLoopCounter;`,
         ],
         [
+            `ForeachLooper.Com`,
+            `COMPONENT { ENTRYPOINT } Looper;
+  VARIABLE
+    room[number: INTEGER]: INTEGER;
+    i: INTEGER;
+  CONSTANT
+    limit = 10;
+  BEGIN
+    FOR i := 1 TO limit DO
+      room[i] := i * 10
+    END;
+    FOREACH i OF room DO
+      WRITE(i); WRITE(" ");
+      WRITE(room[i]); WRITELINE
+    END
+END Looper;`,
+        ],
+        [
+            `AdvancedCollection.Com`,
+            `COMPONENT { ENTRYPOINT } AdvancedCollection;
+  VARIABLE
+    room[number: INTEGER; x1: TEXT; x2: BOOLEAN]: INTEGER;
+    i: INTEGER; t: TEXT; b: BOOLEAN;
+  CONSTANT
+     limit = 10;
+  BEGIN
+    FOR i := 1 TO limit DO
+      room[i, TEXT("T"), TRUE] := i * 10
+    END;
+    room[3, TEXT("T"), FALSE] := 333;
+    room[3, TEXT("A"), FALSE] := 666;
+    IF i IS INTEGER THEN
+      WRITE("i is an INTEGER"); WRITELINE
+    END;
+    FOREACH i, t, b OF room DO
+      WRITE(i); WRITE(" "); WRITE(t); WRITE(" ");
+      IF b THEN
+        WRITE("TRUE")
+      ELSE
+        WRITE("FALSE")
+      END;
+      WRITE(" ");
+      WRITE(room[i, t, b]); WRITELINE
+    END
+END AdvancedCollection;`,
+        ],
+        [
             'HelloWorld.Com',
             `COMPONENT { ENTRYPOINT } HelloWorld;
   BEGIN
