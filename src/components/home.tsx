@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: React gets flagged with TS6133, temporary hack
 import { default as React, Component } from 'react';
 import { Link } from 'react-router-dom';
 

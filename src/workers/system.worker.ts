@@ -43,7 +43,7 @@ ctx.onmessage = async (event) => {
             updater(true);
             const il = compiler.compile(event.data.uri, event.data.code);
             await Runtime.instance().run(il);
-        } catch (err) {
+        } catch (err: any) {
             console.log(err.stack);
             postError(err.message);
         }
