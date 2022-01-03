@@ -55,9 +55,7 @@ export class Playground extends Component<unknown, ComponentState> {
         this.runner?.postMessage({ fn: 'stop' });
     };
 
-    private updateDropdownSelection: (event: ChangeEvent<HTMLSelectElement>) => void = (
-        event: ChangeEvent<HTMLSelectElement>,
-    ) => {
+    private updateDropdownSelection = (event: ChangeEvent<HTMLSelectElement>) => {
         this.setState({ selectedSample: event.target.value });
     };
 
